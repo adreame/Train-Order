@@ -1,0 +1,132 @@
+{# 首页 注册 登录 #}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+{% load staticfiles %}
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    {# 网页标题内容快 #}
+	<title>{% block title %}{% endblock title %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    {# 网页顶部引入文件块 #}
+    {% block topfiles %}{% endblock topfiles %}
+</head>
+<body>
+    {# 网页顶部欢迎信息块 #}
+    {% block header_con %}
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到列车点餐服务平台!</div>
+			<div class="fr">
+                {% if request.user.is_authenticated %}
+				<div class="login_btn fl">
+					欢迎您：<em>{{ user.username }}</em>
+					<span>|</span>
+					<a href=" {% url 'user:logout' %} ">退出</a>
+				</div>
+                {% else %}
+				<div class="login_btn fl">
+					<a href="{% url 'user:login' %}">登录</a>
+					<span>|</span>
+					<a href="{% url 'user:register' %}">注册</a>
+				</div>
+                {% endif %}
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="{% url 'user:user' %}">用户中心</a>
+					<span>|</span>
+					<a href="{% url 'cart:show' %}">我的购物车</a>
+					<span>|</span>
+					<a href="{% url 'user:order' 1 %}">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+    {% endblock header_con %}
+
+    {# 网页顶部搜索框块 #}
+    {% block search_bar %}
+	<div class="search_bar clearfix">
+		<a href="{% url 'goods:index' %}" class="logo fl"><img src="{% static 'images/logo002.png' %}"></a>
+		<div class="search_con fl">
+            <form method="get" action="/search">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                <input type="submit" class="input_btn fr" name="" value="搜索">
+            </form>
+		</div>
+		<div class="guest_cart fr">
+			<a href="{% url 'cart:show' %}" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">{{ cart_count }}</div>
+		</div>
+	</div>
+    {% endblock search_bar %}
+
+    {# 网页主题内容快 #}
+    {% block body %}{% endblock body %}
+
+    {# 版权信息 #}
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2020  列车点餐服务平台 All Rights Reserved</p>
+	</div>
+
+    {# 网页底部html元素块 #}
+    {% block bottom %}{% endblock bottom %}
+
+    {# 网页底部引入文件快 #}
+    {% block bottomfiles %}{% endblock bottomfiles %}
+
+{#    /* 鼠标特效 */#}
+{# <script type="text/javascript">#}
+{#var a_idx = 0;#}
+{#jQuery(document).ready(function($) {#}
+{#    $("body").click(function(e) {#}
+        {#var a = new Array("❤你有梦想吗？❤","❤有还努力去实现！❤","❤你有女朋友吗？❤","❤你没有!❤","❤你有车吗?❤","❤你没有!❤","❤你有房吗?❤","❤你是不是觉得自己能力有限?❤","❤是还不滚去学习!❤","❤你有钱吗?❤","❤你没有!❤","❤你钱赞够了吗?❤","❤你没有!❤","❤你关注我了吗？❤","❤你没有!❤","❤关注成功了吗?❤","❤你没有!❤","❤你是大佬吗?❤","❤你不是!❤","❤你是来学习的吗?❤","❤你不是!❤","❤你看了我几篇博客？❤","❤不知道?❤","❤你想过改变吗?❤","❤不知道?❤","❤你想过未来要做什么吗?❤","❤不知道?❤","❤灵魂三连问你有在思考吗?❤","❤你没有!❤","❤你是条咸鱼吗❤","❤你是!❤","❤你知道什么最难吗?❤","❤你不知道!❤","❤垃圾分类你知道吗?❤","❤老阿姨:你是什么垃圾?❤","❤你还在点吗？❤","❤我猜是!❤","❤你是有多无聊❤","❤别点了还是滚去学习吧!❤","❤点个关注再走关二爷!❤");#}
+        {#var $i = $("<span></span>").text(a[a_idx]);#}
+        {#a_idx = (a_idx + 1) % a.length;#}
+{#        var a = ('❤');#}
+{#        $i = $("<span></span>").text(a);#}
+{#        var x = e.pageX,#}
+{#        y = e.pageY;#}
+{#        $i.css({#}
+{#            "z-index": 9999999,#}
+{#            "top": y - 20,#}
+{#            "left": x,#}
+{#            "position": "absolute",#}
+{#            "font-weight": "bold",#}
+{#            "font-size":26,#}
+{#            "color": "rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"#}
+{#        });#}
+{#        $("body").append($i);#}
+{#        $i.animate({#}
+{#            "top": y - 180,#}
+{#            "opacity": 0#}
+{#        },#}
+{#        1500,#}
+{#        function() {#}
+{#            $i.remove();#}
+{#        });#}
+{#    });#}
+{#});#}
+{##}
+{#</script>#}
+
+{#  吸附球  #}
+{#<script id="c_n_script" src="https://blog-static.cnblogs.com/files/xiaokang01/js.js" color="255,0,255" opacity="1" count="100" zindex="-2">#}
+{#if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {#}
+{##}
+{#} else {#}
+{##}
+{#}#}
+{#</script>#}
+
+</body>
+</html>
